@@ -4,12 +4,7 @@
 
 Los datos de ventas estaran declarados en un array con nombre y precios.
 Los datos del usuario se guardaran en un array con nombre, email y password.
-
-1. Presentar un menú permitiendo el registro de email y password al usuario.
-2. Presentar un menú con las opciones de compra y mostar la factura de venta.
-
-SOLO se emite una factura por estilo.
-
+los datos de los usuario se pueden guardar en el localstorge
 
 */
 
@@ -24,19 +19,29 @@ let listaJeans=[
                 {id:1006, estilo:"oversizeA", precio:55}
                 ]
 
+//+++++++++++++++++++++++++++++gobla variables++++++++++++++++++++++++++++++++++++++++
+
+//here we get the new function agregaralcarrito.
+let carritoCompra=[];
+
+//we have to create new count variable
+let contCarrito= document.getElementById("verCarrito");
+
+let compras=[];
+let compra;
 //+++++++++++++++++++++++++++++DOM++++++++++++++++++++++++++++++++++++++++
 
 //vamos a guardar todo en una funcion
 
 function mostrarCatalogo(){
    
-    //obtenenos el catalogo que va con el grid
+        //obtenenos el catalogo que va con el grid
 
-const catalogoContainer = document.getElementById("catalogo");
+    const catalogoContainer = document.getElementById("catalogo");
 
-//hacemos un forEach para crear cada elemento de la lista de jenas y ponerlos el html
+    //hacemos un forEach para crear cada elemento de la lista de jenas y ponerlos el html
 
-listaJeans.forEach(jeans => {
+    listaJeans.forEach(jeans => {
             
             let product_card = document.createElement("div");
             product_card.className="producto-card";
@@ -91,28 +96,23 @@ listaJeans.forEach(jeans => {
 //esta funcion la llamamos paar que siempre actualice el grid de los jeans
 mostrarCatalogo()
 
-//here we get the new function agregaralcarrito.
-let carritoCompra=[];
-//we have to create new count variable
-let contCarrito= document.getElementById("verCarrito");
 
-let compras=[];
-
-
-function agregarAlCarrito(e){ //la e el evento click
+function agregarAlCarrito(e){ //la "e" el evento click
     
     //capturamos el id del boton
-    let id= parseInt(e.target.getElementById("data-id"));
+    let id= parseInt(e.target.getAttribute("data-id"));
+    //validacion en el consolg
+    console.log("ID Seleccionado:", id);
 
     let jeanSeleccionado= listaJeans.find(jeans => {
        return jeans.id === id;
     })
 
     if(jeanSeleccionado){
-        let compra={ id:jeanSeleccionado.id,
+         compra={ id:jeanSeleccionado.id,
             estilo: jeanSeleccionado.estilo, 
             cantidad: 1,
-            valorTotal: jeanSeleccionado.precio * compra.cantidad,
+            valorTotal: jeanSeleccionado.precio * 1,
             }
         
          carritoCompra.push(compra); //subimos la compra al array del carrito
@@ -121,7 +121,7 @@ function agregarAlCarrito(e){ //la e el evento click
         console.log("jean agregado:", compra);
         console.log("Estado del Carrito:", carritoCompra);
         
-            //llamamos la funcion actlaizar contador
+            //llamamos la funcion actulaizar contador
             actualizarContadorCarrito(); 
 
             //confirmamos la seleccion del articulo
@@ -130,10 +130,17 @@ function agregarAlCarrito(e){ //la e el evento click
 
 }
 
+//funcion para actulizar visualmente el carrito
+
+function actualizarContadorCarrito() {
+     contCarrito.textContent = `🛒 Carrito (${carritoCompra.length})`;
+}
 
 
 
 
+
+//------------esto es lo antiguo para psarlo al dom-----------------
 
 
 

@@ -187,3 +187,245 @@ body {
 }
 
   
+/* ======================================================= */
+/* ESTILOS PARA LA VISTA MODAL DEL CARRITO */
+/* ======================================================= */
+
+.modal-carrito {
+    /* El carrito debe cubrir toda la pantalla */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo negro semitransparente */
+    display: none; /* Crucial: JS cambiará a 'block' para mostrarlo */
+    z-index: 2000; /* Asegura que esté por encima de todo */
+    justify-content: center;
+    align-items: center;
+}
+
+.carrito-contenido {
+    background-color: var(--color-fondo); /* Fondo blanco/gris claro */
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.carrito-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-principal); /* Línea roja */
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.carrito-header h3 {
+    color: var(--color-texto);
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.btn-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--color-principal); /* Color de la marca */
+    font-weight: bold;
+}
+
+/* Estilos de los ítems inyectados por JS */
+.carrito-items-lista {
+    max-height: 300px; /* Limita la altura para scroll */
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
+.carrito-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--color-secundario); /* Línea gris punteada */
+}
+
+.item-estilo {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.item-total {
+    font-weight: 700;
+    color: var(--color-principal);
+    margin-right: 15px;
+}
+
+.btn-eliminar {
+    background-color: #a8001e; /* Rojo oscuro */
+    color: var(--color-blanco);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Estilos de los totales */
+.carrito-totales p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    margin: 8px 0;
+    padding-top: 5px;
+}
+
+.total-final {
+    border-top: 2px solid var(--color-secundario);
+    font-weight: bold;
+    font-size: 1.3em !important;
+    color: var(--color-principal);
+    padding-top: 10px !important;
+}
+
+/* Estilos de los botones de acción */
+.carrito-acciones {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.btn-principal-accion {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.btn-secundario {
+    background-color: var(--color-secundario);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-principal-accion:hover, .btn-secundario:hover {
+    opacity: 0.9;
+}
+
+/* ======================================================= */
+/* ESTILOS PARA EL BOTÓN EN EL HEADER */
+/* ======================================================= */
+.btn-auth {
+    background-color: var(--color-secundario); /* Gris oscuro */
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.btn-auth:hover {
+    background-color: #555;
+}
+
+
+/* ======================================================= */
+/* ESTILOS PARA EL MODAL DE AUTENTICACIÓN */
+/* (Similar a .modal-carrito para mantener la consistencia) */
+/* ======================================================= */
+.modal-auth {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none; /* Inicia oculto */
+    z-index: 2100; /* Debe estar por encima del carrito (2000) */
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-contenido {
+    background-color: var(--color-fondo); 
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.auth-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-principal);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.auth-header h3 {
+    color: var(--color-texto);
+    margin: 0;
+}
+
+/* Estilos de Formulario */
+.auth-formulario {
+    padding: 10px 0;
+}
+
+.auth-formulario h4 {
+    color: var(--color-principal);
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+.btn-principal-accion {
+    width: 100%;
+    margin-top: 10px;
+    /* Reutiliza los estilos del botón Finalizar Compra */
+}
+
+/* Estilos para el cambio de formulario (Login <-> Registro) */
+.toggle-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.toggle-link a {
+    color: var(--color-principal);
+    text-decoration: none;
+    font-weight: bold;
+}

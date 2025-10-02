@@ -14,12 +14,11 @@
         <h1>RAMBED JEANS</h1>
         
         <nav class="navbar">
-            <ul> <!--aca linkiamos todo en una pagina-->
-
+            <ul>
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#acerca-de">Nosotros</a></li>
                 <li><a href="#catalogo-seccion">Catálogo</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><button id="btnAuth" class="btn-auth">👤 Ingresar / Registrarse</button></li>
             </ul>
         </nav>
 
@@ -50,7 +49,7 @@
 
               <div class="producto-card">
                 <img src="img/1004 calro.png" alt="jean claro">
-                <h3>jeas</h3>
+                <h3>jeans</h3>
                 <div class="precio">99000</div>
                 <a href="#catalogo-seccion" class="btn-agregar">agregar</a>
               </div>
@@ -58,7 +57,88 @@
                 </div>
         </section>
 
+         <!--creamos una ventana modal para el carrito --> 
+         
+        <section id="vistaCarrito" class="modal-carrito">
+            <div class="carrito-contenido">
+                
+                <div class="carrito-header">
+                    <h3>🛒 Tu Carrito RAMBED</h3>
+                    <button id="cerrarCarrito" class="btn-cerrar">X</button>
+                </div>
+        
+                <div id="itemsCarrito" class="carrito-items-lista">
+                    </div>
+        
+                <div class="carrito-totales">
+                    <p>Subtotal: <span id="carritoSubtotal">$0.00</span></p>
+                    <p class="total-final">Total a Pagar: <span id="carritoTotalFinal">$0.00</span></p>
+                </div>
+        
+                <div class="carrito-acciones">
+                    <button id="btnSeguirComprando" class="btn-secundario">Seguir Comprando</button>
+                    <button id="btnFinalizarCompra" class="btn-principal-accion">Finalizar Compra</button>
+                </div>
+        
+            </div>
+        </section>
+
+         <!--eotra ventana modal para el loggin--> 
+         <section id="modalAuth" class="modal-auth">
+            <div class="auth-contenido">
+                
+                <div class="auth-header">
+                    <h3>Acceso RAMBED JEANS</h3>
+                    <button id="cerrarAuth" class="btn-cerrar">X</button>
+                </div>
+        
+                <div class="auth-formulario">
+                    <form id="loginForm">
+                        <h4>Ingresar</h4>
+                        <div class="form-group">
+                            <label for="loginEmail">Email:</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Contraseña:</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn-principal-accion">Iniciar Sesión</button>
+                    </form>
+        
+                    <form id="registroForm" style="display:none;"> <!--queda bloqueado hasta cambaiarlo-->
+                        <h4>Registrarse</h4>
+                        <div class="form-group">
+                            <label for="regNombre">Nombre:</label>
+                            <input type="text" id="regNombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regEmail">Email:</label>
+                            <input type="email" id="regEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword">Contraseña:</label>
+                            <input type="password" id="regPassword" required>
+                        </div>
+                        <button type="submit" class="btn-principal-accion">Registrarme</button>
+                    </form>
+                    
+                    <p class="toggle-link">
+                        ¿No tienes cuenta? 
+                        <a href="#" id="linkRegistro">Regístrate aquí.</a>
+                    </p>
+                    <p class="toggle-link" style="display:none;">
+                        ¿Ya tienes cuenta? 
+                        <a href="#" id="linkLogin">Ingresa aquí.</a>
+                    </p>
+        
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    
 
     <footer class="footer" id="contacto">
         <p>Contáctanos en info@rambedjeans.com | &copy; 2024 RAMBED JEANS.</p>
