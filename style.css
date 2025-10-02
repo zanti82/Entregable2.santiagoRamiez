@@ -1,0 +1,189 @@
+
+:root {
+    --color-principal: #D90429; 
+    --color-secundario: #444; 
+    --color-fondo: #f5f5f5; 
+    --color-texto: #111; 
+    --color-blanco: #fff;
+}
+
+/* Base y Tipografía */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+   
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.header {
+    background-color: var(--color-texto);
+    color: var(--color-blanco);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 5px solid var(--color-principal);
+    position: sticky; /* Fija el encabezado al hacer scroll */
+    top: 0;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+    font-weight: 700;
+    color: var(--color-principal); /* Le damos toque rojo al nombre */
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar li a {
+    color: var(--color-fondo);
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: color 0.3s;
+}
+
+.navbar li a:hover {
+    color: var(--color-principal); 
+}
+
+#verCarrito {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    
+}
+#verCarrito:hover { background-color: #a8001e; }
+
+
+.banner {
+    background-color: var(--color-secundario); 
+    color: var(--color-blanco);
+    height: 400px; 
+    display: flex;
+   
+    justify-content: center;
+    text-align: center;
+    background-image: url("img/01_Hero.png");
+   
+}
+
+
+.btn-banner {
+    margin-top: 330px;
+    display: inline-block;
+    background-color: var(--color-texto);
+    color: var(--color-blanco);
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: 700;
+    transition: background-color 0.3s;
+}
+
+.btn-banner:hover {
+    background-color: var(--color-secundario);
+}
+
+
+.acerca-de {
+    background-color: var(--color-blanco);
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.acerca-de h2 {
+    color: var(--color-secundario);
+    margin-bottom: 20px;
+}
+
+/* La seccion catologo la manejamos desde el js */
+
+.catalogo-seccion h2 {
+    text-align: center;
+    margin: 40px 0 20px;
+    color: var(--color-principal);
+}
+
+.catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+
+/* aca trabajamos con js*/
+
+.producto-card {
+    background-color: var(--color-blanco);
+    border: 1px solid var(--color-secundario);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.producto-card img {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: cover; 
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.producto-card h3 {
+    color: var(--color-texto);
+    margin: 10px 0 5px;
+}
+
+.producto-card .precio {
+    color: var(--color-principal);
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.btn-agregar {
+    background-color: var(--color-secundario);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.btn-agregar:hover {
+    background-color: var(--color-principal);
+}
+
+
+/* final footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background-color: var(--color-secundario);
+    color: var(--color-fondo);
+}
+
+  
