@@ -61,6 +61,21 @@ body {
     color: var(--color-principal); 
 }
 
+.btn-auth {
+    background-color: var(--color-secundario); /* Gris oscuro */
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.btn-auth:hover {
+    background-color: #555;
+}
+
+
 #verCarrito {
     background-color: var(--color-principal);
     color: var(--color-blanco);
@@ -323,28 +338,13 @@ body {
     opacity: 0.9;
 }
 
-/* ======================================================= */
-/* ESTILOS PARA EL BOTÓN EN EL HEADER */
-/* ======================================================= */
-.btn-auth {
-    background-color: var(--color-secundario); /* Gris oscuro */
-    color: var(--color-blanco);
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-.btn-auth:hover {
-    background-color: #555;
-}
 
 
-/* ======================================================= */
+
+
 /* ESTILOS PARA EL MODAL DE AUTENTICACIÓN */
 /* (Similar a .modal-carrito para mantener la consistencia) */
-/* ======================================================= */
+
 .modal-auth {
     position: fixed; 
     top: 0;

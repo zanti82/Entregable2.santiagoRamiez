@@ -136,32 +136,90 @@ function actualizarContadorCarrito() {
      contCarrito.textContent = `🛒 Carrito (${carritoCompra.length})`;
 }
 
+//-----------------ver carro de compras------------------
+let listaCarrito= document.getElementById("vistaCarrito")
+let items= document.getElementById("itemsCarrito");
+let totalPagar= document.getElementById("carritoTotalFinal");
+const btnCerrarCarrito = document.getElementById('cerrarCarrito');
+
+contCarrito.addEventListener("click", ()=>{
+   
+    //crearTablaCarrito();
+    listaCarrito.style.display = `flex`;
+})
+
+btnCerrarCarrito.addEventListener("click", ()=>{
+
+    listaCarrito.style.display = `none`;
+
+})
 
 
+function crearTablaCarrito(){
+
+    
+
+
+    
+
+
+}
 
 
 //------------esto es lo antiguo para psarlo al dom-----------------
 
+//--------------ingreso de usuarios----y almacenamiento de datos en el storage
+
+let paginaIngresar = document.getElementById("modalAuth");
+let loginEmail= document.getElementById("loginEmail");
+let loginPassword= document.getElementById("loginPassword");
+
+let btnCerrarFormRegistro = document.getElementById('cerrarAuth');
+let btnIngreso= document.getElementById("btnAuth");
 
 
+btnIngreso.addEventListener("click", ()=>{
+   
+    
+    paginaIngresar.style.display = `flex`;
+})
 
-//declaramos una coleccion para usuario y compras
-//declaramos a usuario como clase
+btnCerrarFormRegistro.addEventListener("click", ()=>{
+
+    paginaIngresar.style.display = `none`;
+
+})
+
+//--------------registro de usuarios----y almacenamiento de datos en el storage
+let linKregistrarse = document.getElementById("linkRegistro");
+let formReg = document.getElementById("registroForm");
+let nomReg= document.getElementById("regNombre");
+let mailReg= document.getElementById("regEmail");
+let passReg= document.getElementById("regPassword");
+let btnRegistro= document.getElementById("btnRegistro");
+
+//et btnCerrarFormRegistro = document.getElementById('cerrarAuth');
+//let btnIngreso= document.getElementById("btnAuth");
+
+linKregistrarse.addEventListener("click",()=>{
+   
+    formReg.style.display = `block`;
+})
+
 
 class Usuario{
     constructor(nombre, mail, password){
-
-    
+   
     this.nombre= nombre;
     this.mail=mail;
     this.password=password;
     }
 }
 
+
 // array para guardar datos de usuarios vacio.
 
 let usuarios=[{nombre:"a", mail:"a", password:"a"}]; //usuario de ensayo
-
 
 // declarmaos variables para usarlas con las funciones
 //inicio de  numero de facturacion en 1000.
@@ -172,9 +230,9 @@ let nfactura=1000;
 
 function registrarse(){ //aca guardamos los registro de usuarios
 
-    let nombreU=prompt("ingrese su nombre: ");
-    let mailU=prompt("ingrese su email: ");
-    let passwordU=prompt("ingrese su password: ");
+    let nombreU= nomReg.value;
+    let mailU=mailReg.value;
+    let passwordU= mailReg.value;
 
     //creamos una colleccion de info del usuairo
     let usuario= new Usuario(nombreU, mailU, passwordU);
@@ -187,10 +245,28 @@ function registrarse(){ //aca guardamos los registro de usuarios
             \n email: ${usuario.mail}
             \n password: ${usuario.password} `);
 
+    guardarCleintesLocalStorage();
 
     //verificano valores        
     console.log(usuarios);
 
+}
+
+btnRegistro.addEventListener("click",registrarse)
+
+//guardamo datos el el localStorage//
+
+const USERS_STORAGE_KEY = 'rambedClientes'; 
+
+function guardarCleintesLocalStorage() {
+   //convertimo el array usuario a JSON
+
+    const usuariosJSON = JSON.stringify(usuarios);
+    
+    // 2. Guardar esa cadena de texto en LocalStorage.
+    localStorage.setItem(USERS_STORAGE_KEY, usuariosJSON);
+
+    console.log("Usuarios guardados en LocalStorage.");
 }
 
 
