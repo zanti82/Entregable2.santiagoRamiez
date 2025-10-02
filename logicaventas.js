@@ -334,41 +334,8 @@ function verFacturas(){ //listamos las facturas
 }
 
 
-//INICIO DEL PROGRAMA
-
-alert("BIENVENIDO AL CARRITO DE COMPRAS DE RAMBED JEANS");
-
-//variable global para que la lea el while.
-
-let op=0;
 
 
-do{
 
-    op=parseInt(prompt(`ingresa una las siguientes opciones:
-           \n 1. registrarse \n 2. ingresar \n 0. salir`));
-
-    switch (op) {
-        case 1:
-            registrarse();
-                        
-            break;
-        
-        case 2:
-            ingresar();
-        
-            break;
-        
-        case 0:
-            confirm("gracias por usar rambedJeans");
-                    
-            break;
-    
-        default:
-            alert("opción errada");
-            break;
-    }
-
-}while(op!==0);
 
 
