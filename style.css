@@ -255,7 +255,8 @@ body {
     font-weight: bold;
 }
 
-/* Estilos de los ítems inyectados por JS */
+/* Aca mannejamos los css que vamos a crear desde js */
+
 .carrito-items-lista {
     max-height: 300px; /* Limita la altura para scroll */
     overflow-y: auto;
@@ -414,10 +415,10 @@ body {
 .btn-principal-accion {
     width: 100%;
     margin-top: 10px;
-    /* Reutiliza los estilos del botón Finalizar Compra */
+    /* Reutilizamos estilos del botón Finalizar Compra */
 }
 
-/* Estilos para el cambio de formulario (Login <-> Registro) */
+/* Estilos para el cambio de formulario (Login <-> Registro) 
 .toggle-link {
     text-align: center;
     margin-top: 15px;
@@ -429,3 +430,4 @@ body {
     text-decoration: none;
     font-weight: bold;
 }
+    */

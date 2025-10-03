@@ -16,12 +16,15 @@ let listaJeans=[
                 {id:1003, estilo: "regulaA", precio: 40},
                 {id:1004, estilo:"slimB", precio:40},
                 {id:1005, estilo: "cargoB", precio: 60},
-                {id:1006, estilo:"oversizeA", precio:55}
+                {id:1006, estilo:"oversizeA", precio:55},
+               
                 ]
+
+
 
 //+++++++++++++++++++++++++++++gobla variables++++++++++++++++++++++++++++++++++++++++
 
-//here we get the new function agregaralcarrito.
+
 let carritoCompra=[];
 
 //we have to create new count variable
@@ -144,7 +147,7 @@ const btnCerrarCarrito = document.getElementById('cerrarCarrito');
 
 contCarrito.addEventListener("click", ()=>{
    
-    //crearTablaCarrito();
+    crearTablaCarrito();
     listaCarrito.style.display = `flex`;
 })
 
@@ -154,13 +157,63 @@ btnCerrarCarrito.addEventListener("click", ()=>{
 
 })
 
+//declaramos las variables globales
+let itemsCarrito = document.getElementById('itemsCarrito');
+let totalCarrito = document.getElementById('carritoTotalFinal');
+
 
 function crearTablaCarrito(){
+    //actualizamos la tablas vacia
 
-    
+    itemsCarrito.innerHTML=" "; //vaciamos
+    let sumTotal=0;
+
+    if(carritoCompra.length === 0){
+        itemsCarrito.innerHTML = '<p style="text-align:center; padding: 20px;">Tu carrito está vacío 😔.</p>';
+        sumTotal = 0;
+    }else{
+        carritoCompra.forEach((jeans, index) => {
+            
+            //creamos el item con los dettalles
+            let item = document.createElement('div');
+            item.className = 'carrito-item';
+
+            let estilo = document.createElement('span');
+            estilo.className = 'item-estilo';
+            estilo.textContent = `${item.estilo} (x${item.cantidad})`;
+
+            
+            let total = document.createElement('span');
+            total.className = 'item-total';
+            total.textContent = `$${item.valorTotal}`; 
+
+            //creamos le boton que hayq ponelro a funcionar, por eso necesito le index
+
+            let eliminar = document.createElement('button');
+            eliminar.className = 'btn-eliminar';
+            eliminar.textContent = 'Eliminar';
+            
+            eliminar.setAttribute('data-index', index); //usamo le index para luego saber que borramos
+            
+            //click
+           // eliminar.addEventListener('click', eliminarItemDelCarrito);
+
+            //anexamos todo
+            item.appendChild(estilo);
+            item.appendChild(total);
+            item.appendChild(eliminar);
+            itemsCarrito.appendChild(item);
+
+           
+            sumTotal += item.valorTotal;
 
 
-    
+
+            });
+
+        
+    }   totalCarrito.textContent = `$${sumTotal}`; 
+
 
 
 }
@@ -258,23 +311,46 @@ btnRegistro.addEventListener("click",registrarse)
 
 const USERS_STORAGE_KEY = 'rambedClientes'; 
 
+
 function guardarCleintesLocalStorage() {
    //convertimo el array usuario a JSON
 
     const usuariosJSON = JSON.stringify(usuarios);
     
-    // 2. Guardar esa cadena de texto en LocalStorage.
+    // 2. Guardar esa cadena de texto en LocalStorage. necesita dos parametros key value
     localStorage.setItem(USERS_STORAGE_KEY, usuariosJSON);
 
     console.log("Usuarios guardados en LocalStorage.");
 }
+
+function obtenerDatosLocalStorage(){ // esta funcion la podemos llamar al incio para cargar datos guardados
+    const usuariosJSON = localStorage.getItem(USERS_STORAGE_KEY);
+    //paseramos los datos
+
+    if(usuariosJSON){
+        const usuariosCargados = JSON.parse(usuariosJSON); // ya quedan los datos en un array
+        //validamos datos en array
+        console.log(usuariosCargados);
+
+        //pasamos lo datos al array global del programa
+        usuarios = usuariosCargados;
+    }else{
+        console.log(`no hay usuarios guardados en el localStorage--there are not users saved in localStorage`)
+    }
+    
+
+}
+
+//cargamos datos el local storage
+
+obtenerDatosLocalStorage();
 
 
 
     
 
 
-
+/////FALTA ORGANIZAR ESTO CON EL DOM
 
 function ingresar(){ //aca se loggea un usuario registrado
     
