@@ -1,7 +1,9 @@
 
 :root {
     --color-principal: #D90429; 
-    --color-secundario: #444; 
+    --color-secundario: #444;
+    --color-secundario1: #000000;
+
     --color-fondo: #f5f5f5; 
     --color-texto: #111; 
     --color-blanco: #fff;
@@ -61,18 +63,23 @@ body {
     color: var(--color-principal); 
 }
 
+.estadoUser{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
 .btn-auth {
-    background-color: var(--color-secundario); /* Gris oscuro */
+    background-color: var(--color-principal);/* Gris oscuro */
     color: var(--color-blanco);
     border: none;
     padding: 10px 15px;
     cursor: pointer;
     font-size: 16px;
     border-radius: 5px;
-    transition: background-color 0.3s;
+   
 }
 .btn-auth:hover {
-    background-color: #555;
+    background-color:  #a8001e;
 }
 
 
@@ -185,8 +192,7 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
-}
+   }
 .btn-agregar:hover {
     background-color: var(--color-principal);
 }
@@ -197,8 +203,18 @@ body {
     text-align: center;
     padding: 20px;
     margin-top: 40px;
-    background-color: var(--color-secundario);
+    background-color: var(--color-secundario1);
     color: var(--color-fondo);
+}
+
+#img-footer{
+    margin: auto;
+    width: 100%;
+    min-height: 300px;
+    background-image: url("/img/03_La\ Fuerza\ De\ un\ Jean.png");
+    background-size: contain;
+    border: 1px solid white;
+    
 }
 
   
@@ -333,10 +349,11 @@ body {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: 700;
 }
 
 .btn-principal-accion:hover, .btn-secundario:hover {
-    opacity: 0.9;
+    opacity: 0.7;
 }
 
 
@@ -412,22 +429,22 @@ body {
     box-sizing: border-box; /* Incluye padding en el ancho */
 }
 
-.btn-principal-accion {
+/*.btn-principal-accion {
     width: 100%;
     margin-top: 10px;
-    /* Reutilizamos estilos del botón Finalizar Compra */
-}
+    /* Reutilizamos estilos del botón Finalizar Compra 
+}*/
 
-/* Estilos para el cambio de formulario (Login <-> Registro) 
-.toggle-link {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 0.9em;
-}
-
-.toggle-link a {
+/* Estilos para el cambio de formulario (Login <-> Registro)  */
+.linkLogin{
     color: var(--color-principal);
     text-decoration: none;
     font-weight: bold;
 }
-    */
+
+.linkRegistro{
+    color: var(--color-principal);
+    text-decoration: none;
+    font-weight: bold;
+}
+    

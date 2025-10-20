@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAMBED JEANS | Moda y Estilo</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script> 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="logicaventas.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+   
 </head>
 <body>
 
@@ -18,11 +22,15 @@
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#acerca-de">Nosotros</a></li>
                 <li><a href="#catalogo-seccion">Catálogo</a></li>
-                <li><button id="btnAuth" class="btn-auth">👤 Ingresar / Registrarse</button></li>
+                
             </ul>
         </nav>
-
-        <button id="verCarrito">🛒 Carrito (0)</button>
+        <div class="estadoUser">
+            <span id="estadoUser">Hola, <b>No estas loggeado</b></span>
+            <button id="btnAuth" class="btn-auth">👤 Ingresar / Registrarse</button>
+            <button id="verCarrito">🛒 Carrito (0)</button>
+        </div>
+        
     </header>
 
     <main>
@@ -45,7 +53,7 @@
             
             <div id="catalogo" class="catalogo-grid">
 
-               <!--este e sun ejemplo de la card--> 
+               <!--este es un ejemplo de la card 
 
               <div class="producto-card">
                 <img src="img/1004 calro.png" alt="jean claro">
@@ -53,7 +61,7 @@
                 <div class="precio">99000</div>
                 <a href="#catalogo-seccion" class="btn-agregar">agregar</a>
               </div>
-              
+              -->
                 </div>
         </section>
 
@@ -92,6 +100,8 @@
                 <div class="carrito-acciones">
                     <button id="btnSeguirComprando" class="btn-secundario">Seguir Comprando</button>
                     <button id="btnFinalizarCompra" class="btn-principal-accion">Finalizar Compra</button>
+                    <button id="btnVaciarCompra" class="btn-secundario">Vaciar carrito</button>
+
                 </div>
         
             </div>
@@ -117,7 +127,7 @@
                             <label for="loginPassword">Contraseña:</label>
                             <input type="password" id="loginPassword" required>
                         </div>
-                        <button type="submit" class="btn-principal-accion">Iniciar Sesión</button>
+                        <button type="submit" class="btn-principal-accion" id="loginBtn">Iniciar Sesión</button>
                     </form>
         
                     <form id="registroForm" style="display:none;"> <!--queda bloqueado hasta cambaiarlo-->
@@ -125,6 +135,14 @@
                         <div class="form-group">
                             <label for="regNombre">Nombre:</label>
                             <input type="text" id="regNombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regId">Numero ID:</label>
+                            <input type="text" id="regId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regDireccion">Direccion: </label>
+                            <input type="text" id="regDir" required>
                         </div>
                         <div class="form-group">
                             <label for="regEmail">Email:</label>
@@ -137,11 +155,11 @@
                         <button type="submit" class="btn-principal-accion" id="btnRegistro">Registrarme</button>
                     </form>
                     
-                    <p class="toggle-link">
+                    <p class="linkRegistro">
                         ¿No tienes cuenta? 
                         <a href="#" id="linkRegistro">Regístrate aquí.</a>
                     </p>
-                    <p class="toggle-link" style="display:none;">
+                    <p class="linkLogin" style="display:none;">
                         ¿Ya tienes cuenta? 
                         <a href="#" id="linkLogin">Ingresa aquí.</a>
                     </p>
@@ -155,7 +173,8 @@
     
 
     <footer class="footer" id="contacto">
-        <p>Contáctanos en info@rambedjeans.com | &copy; 2024 RAMBED JEANS.</p>
+        <p>Contáctanos en info@rambedjeans.com | &copy; 2025 RAMBED JEANS.</p>
+        <div id="img-footer"></div> 
     </footer>
 
     </body>

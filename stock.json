@@ -1,0 +1,43 @@
+{	
+	"tienda" : "rambed jeans",
+	"stock" : [	
+		{ "id" : "4212",
+		  "estilo" : "Cargo denim azul",
+		  "precio" : "99",
+		  "img": "/img/slimA.png",
+		  "tallas" : [ "28", "30", "32","34","36" ] },
+
+		{ "id" : "4503",
+		  "estilo" : "Bermuda Cargo dril",
+		  "precio" : "89",
+		  "img": "/img/bermudakaky.png",
+		  "tallas" : [ "28", "30", "32","34","36" ] },
+
+		{ "id" : "8501",
+		  "estilo" : "Rambed urban",
+		  "precio" : "110",
+		  "img": "/img/urbanCarpintero.png",
+		  "tallas" : [ "28", "30", "32","34","36" ] },
+
+		  { "id" : "9503",
+		  "estilo" : "Demio urban",
+		  "precio" : "110",
+		  "img": "/img/cargoB.png",
+		  "tallas" : [ "28", "30", "32","34","36" ] }, 
+
+		  { "id" : "4501",
+		  "estilo" : "FiveForty Clasic",
+		  "precio" : "80",
+		  "img": "/img/regulaA.png",
+		  "tallas" : [ "28", "30", "32","34","36" ] },
+		  
+		  { "id" : "4502",
+		  "estilo" : "FiveForty Baggy",
+		  "precio" : "85",
+		  "img": "/img/oversizeA.png",
+		  "tallas" : [ "28", "30", "32","34","36" ] } 
+
+
+		]
+}
+ 

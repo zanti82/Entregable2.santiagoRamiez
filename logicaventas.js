@@ -1,44 +1,151 @@
 // SIMULACION DE COMPRAS EN RAMBEDJEANS
 
-/*
 
-Los datos de ventas estaran declarados en un array con nombre y precios.
-Los datos del usuario se guardaran en un array con nombre, email y password.
-los datos de los usuario se pueden guardar en el localstorge
+
+/*
+EL usuario debe registrarse para comprar.
+Los datos del usuario se guardaran en un array con nombre, email y password en local storage
+Las facturas se guardan en local storage.
+
+Se usa un fetch para cargar el json creado con estilos.
+
 
 */
 
 //array con lista de jeans y precios
 
 let listaJeans=[
-                {id:1001, estilo: "slimA", precio: 40},
+               /* {id:10044, estilo: "slimA", precio: 40000},
                 {id:1002, estilo:"cargoA", precio:60},
                 {id:1003, estilo: "regulaA", precio: 40},
                 {id:1004, estilo:"slimB", precio:40},
                 {id:1005, estilo: "cargoB", precio: 60},
                 {id:1006, estilo:"oversizeA", precio:55},
-               
+               */
                 ]
 
 
+//*******************PROMESA ASYNCRONA****************************//
 
-//+++++++++++++++++++++++++++++gobla variables++++++++++++++++++++++++++++++++++++++++
+const URL="/stock.json"
+
+let stock=[];
+
+async function fetchJsonRB() {
+
+    
+    try {   
+          
+            let response =  await fetch(URL); //capturamos al promesa
+
+             console.log(response) //validamos la promesa
+
+            if(!response.ok){
+                throw new Error (`Error ${response.status}`);
+            }
+            
+            let listaJeansJSON = await response.json();
+            console.log("succesfull");
+
+           
+           //paresamos los datos tipo nuemro y float
+           
+
+            listaJeans= listaJeansJSON.stock.map((jeans)=> {
+                return {
+                    id : parseInt(jeans.id),
+		        estilo : jeans.estilo,
+                precio : parseFloat(jeans.precio),
+		        img : jeans.img,
+		        tallas: jeans.tallas }         
+                
+            })
+
+          
+             mostrarCatalogo()
+           
+               
+        
+    } catch (error) {
+        
+        
+        Swal.fire({
+            title: '¡no se cargaron los datos de la promesa!',
+            html: `
+                  <p>¡ERRRO JSON ${error}!</p>
+            `,
+            icon: 'warning', // (success, error, warning, info, question)
+            confirmButtonText: 'revisar', 
+         })
+        throw error;
+
+    }
+     finally{
+        console.log("promesa comppletada completada")
+
+     }
+    
+}
+
+fetchJsonRB();
 
 
-let carritoCompra=[];
+//+++++++++++++++++++++++++++++variables globales++++++++++++++++++++++++++++++++++++++++
 
-//we have to create new count variable
-let contCarrito= document.getElementById("verCarrito");
 
-let compras=[];
+let carritoCompra=[]; //array para anexar la compras
+let contCarrito= document.getElementById("verCarrito"); //contador del carrito
+
+let compras=[]; // array para las compras
 let compra;
+
+let facturasCompras=[]; //array para gaurdar las facturas
+let factura; //variable que crea facturas
+let numFactura= 1000;
+
+//*****************************************************************************//
+//*****************************************************************************//
 //+++++++++++++++++++++++++++++DOM++++++++++++++++++++++++++++++++++++++++
 
-//vamos a guardar todo en una funcion
+//FUNCION PARA USAR EL TOSTIFY CON VARIOS COLORES
+
+function alertTosty(mensaje, tipo = '') {
+    let backgroundColor;
+
+    switch (tipo) {
+        case 'ok':
+            backgroundColor = "rgb(27, 181, 19)"; 
+            break;
+        case 'error':
+            backgroundColor = "rgb(216, 81, 8)";
+            break;
+        case 'info':
+        default:
+            backgroundColor = "rgb(29, 216, 213)"; 
+            break;
+    }
+
+    Toastify({
+        text: mensaje,
+        duration: 3000, 
+        newWindow: true,
+        gravity: "top", 
+        position: "right", 
+        style: {
+            background: backgroundColor,
+            borderRadius: "5px"
+        },
+        onClick: function(){} // Callback al hacer clic en el toast
+    }).showToast();
+}
+
+
+
+//Creamos una funcion que nos muestre el catalogo de jeans
 
 function mostrarCatalogo(){
    
-        //obtenenos el catalogo que va con el grid
+     //obtenenos el catalogo que va con el grid
 
     const catalogoContainer = document.getElementById("catalogo");
 
@@ -49,7 +156,7 @@ function mostrarCatalogo(){
             let product_card = document.createElement("div");
             product_card.className="producto-card";
 
-            // Asignamos el ID del producto como atributo de datos (crucial para el carrito)
+            // Asignamos el ID del producto como atributo de datos para facilitar el manejo
             product_card.setAttribute('data-id', jeans.id); 
 
             // creamos demas elementos
@@ -62,22 +169,16 @@ function mostrarCatalogo(){
             let botonAgregar = document.createElement("button");
             botonAgregar.className = "btn-agregar";
             botonAgregar.textContent = "Agregar al Carrito";
-            botonAgregar.setAttribute('data-id', jeans.id); 
-
-            
+            botonAgregar.setAttribute('data-id', jeans.id);  // Al botón también le pasamos el ID
 
             //agregamos los atibutos de la lista jeans
 
-            img.src=`img/${jeans.estilo.toLocaleLowerCase()}.png`;
-            img.alt=`Jean Estilo ${jeans.estilo}`
+            img.src=`${jeans.img}`;
+            img.alt=`${jeans.estilo}`
 
             h3.textContent = jeans.estilo.toUpperCase();
             precio.textContent = `$${jeans.precio}`;
-
-
-            // Al botón también le pasamos el ID
-            botonAgregar.setAttribute('data-id', jeans.id); 
-
+          
             //agregamos todo al html con apenndchild
 
             product_card.appendChild(img);
@@ -85,79 +186,67 @@ function mostrarCatalogo(){
             product_card.appendChild(precio);
             product_card.appendChild(botonAgregar);
 
-
             catalogoContainer.appendChild(product_card);
 
             //----------------logica de agregar al carro-----------------//
-            //creamos el evento de agregar al carrito, solo logica backend
             botonAgregar.addEventListener('click', agregarAlCarrito); 
 
         })
 
 }
 
-//esta funcion la llamamos paar que siempre actualice el grid de los jeans
-mostrarCatalogo()
 
-
-function agregarAlCarrito(e){ //la "e" el evento click
-    
-    //capturamos el id del boton
+function agregarAlCarrito(e){ 
+    //la "e" el evento click
+    //capturamos el ID del boton
     let id= parseInt(e.target.getAttribute("data-id"));
-    //validacion en el consolg
-    console.log("ID Seleccionado:", id);
 
-    let jeanSeleccionado= listaJeans.find(jeans => {
+    let cantidadUser= parseInt(prompt("ingresa la cantidad deseada"));
+    
+    
+    console.log("ID Seleccionado:", id); //validacion en el consolg PARA BORRAR
+
+    let jeanSeleccionado = listaJeans.find((jeans) => {
        return jeans.id === id;
     })
 
     if(jeanSeleccionado){
          compra={ id:jeanSeleccionado.id,
-            estilo: jeanSeleccionado.estilo, 
-            cantidad: 1,
-            valorTotal: jeanSeleccionado.precio * 1,
-            }
+                estilo: jeanSeleccionado.estilo, 
+                cantidad: cantidadUser,
+                valorTotal: jeanSeleccionado.precio * cantidadUser,
+                }
         
          carritoCompra.push(compra); //subimos la compra al array del carrito
 
-        //validamos
+        //validamos //PARA BORRAR
         console.log("jean agregado:", compra);
         console.log("Estado del Carrito:", carritoCompra);
+    
         
-            //llamamos la funcion actulaizar contador
-            actualizarContadorCarrito(); 
+        
+        actualizarContadorCarrito(); //Actualizamos el carrito de compra
 
-            //confirmamos la seleccion del articulo
-        alert(`¡${jeanSeleccionado.estilo} agregado al carrito!`);
+
+        //confirmamos la seleccion del articulo alert  POR EL TOSTIFY
+          
+        alertTosty(`¡${jeanSeleccionado.estilo} agregado al carrito!`,`ok` )
+       
+            
     }
 
 }
 
-//funcion para actulizar visualmente el carrito
+//funcion para actualizar visualmente el carrito
 
 function actualizarContadorCarrito() {
      contCarrito.textContent = `🛒 Carrito (${carritoCompra.length})`;
 }
 
-//-----------------ver carro de compras------------------
-let listaCarrito= document.getElementById("vistaCarrito")
-let items= document.getElementById("itemsCarrito");
-let totalPagar= document.getElementById("carritoTotalFinal");
-const btnCerrarCarrito = document.getElementById('cerrarCarrito');
-
-contCarrito.addEventListener("click", ()=>{
-   
-    crearTablaCarrito();
-    listaCarrito.style.display = `flex`;
-})
-
-btnCerrarCarrito.addEventListener("click", ()=>{
-
-    listaCarrito.style.display = `none`;
-
-})
+//-----------------VER CARRITO DE COMPRAS------------------//
 
 //declaramos las variables globales
+let sumTotal=0;
 let itemsCarrito = document.getElementById('itemsCarrito');
 let totalCarrito = document.getElementById('carritoTotalFinal');
 
@@ -166,7 +255,7 @@ function crearTablaCarrito(){
     //actualizamos la tablas vacia
 
     itemsCarrito.innerHTML=" "; //vaciamos
-    let sumTotal=0;
+    
 
     if(carritoCompra.length === 0){
         itemsCarrito.innerHTML = '<p style="text-align:center; padding: 20px;">Tu carrito está vacío 😔.</p>';
@@ -180,12 +269,12 @@ function crearTablaCarrito(){
 
             let estilo = document.createElement('span');
             estilo.className = 'item-estilo';
-            estilo.textContent = `${item.estilo} (x${item.cantidad})`;
+            estilo.textContent = `${jeans.estilo} (x${jeans.cantidad})`;
 
             
             let total = document.createElement('span');
             total.className = 'item-total';
-            total.textContent = `$${item.valorTotal}`; 
+            total.textContent = `$${jeans.valorTotal}`; 
 
             //creamos le boton que hayq ponelro a funcionar, por eso necesito le index
 
@@ -196,45 +285,246 @@ function crearTablaCarrito(){
             eliminar.setAttribute('data-index', index); //usamo le index para luego saber que borramos
             
             //click
-           // eliminar.addEventListener('click', eliminarItemDelCarrito);
+            eliminar.addEventListener('click', eliminarItemDelCarrito);
 
             //anexamos todo
             item.appendChild(estilo);
             item.appendChild(total);
             item.appendChild(eliminar);
             itemsCarrito.appendChild(item);
-
            
-            sumTotal += item.valorTotal;
+            sumTotal += jeans.valorTotal;
+
+            });      
+
+    }   totalCarrito.textContent = `$${sumTotal}`; 
+    
+}
+
+//--------FUNCIONES PARA ABRIR EL CARRITO Y CERRARLO-------------//
+
+let listaCarrito= document.getElementById("vistaCarrito")
+const btnCerrarCarrito = document.getElementById('cerrarCarrito');
+const btnSeguirComprando = document.getElementById('btnSeguirComprando');
+const btnVaciarCarrito = document.getElementById('btnVaciarCompra');
+const btnFinalizarCompra = document.getElementById('btnFinalizarCompra');
 
 
 
-            });
+contCarrito.addEventListener("click", ()=>{
+   
+    crearTablaCarrito();
+    listaCarrito.style.display = `flex`;
+})
+
+btnCerrarCarrito.addEventListener("click", ()=>{
+
+    listaCarrito.style.display = `none`;
+
+})
+
+btnSeguirComprando.addEventListener("click", ()=>{
+
+    listaCarrito.style.display = `none`;
+
+})
+
+btnVaciarCarrito.addEventListener("click", ()=>{
+
+   vaciarCarrito();
+   console.log("Estado del Carrito:", carritoCompra);
+
+})
+
+function vaciarCarrito(){
+   carritoCompra=[]
+   crearTablaCarrito();
+   actualizarContadorCarrito();
+
+}
+
+function eliminarItemDelCarrito(e){
+    let index=parseInt( e.target.getAttribute("data-index"));
+    console.log(index);
+    carritoCompra.splice(index,1);
+    crearTablaCarrito(); //actualizamos de neuvo el carrrito y el contador
+    actualizarContadorCarrito();
+    console.log("Estado del Carrito:", carritoCompra);
+   
+}
+
+
+//************************************FINALIZAR COMPRA **************************************//
+//***************************************************************************************//
+
+const FACTURAS_LOCALSTORAGE_KEY = 'facturas'; //esta variable para usarlo en el local storage
+
+
+btnFinalizarCompra.addEventListener(`click`,() => {
+
+    if(carritoCompra.length===0){
+        //tostify
+         alertTosty(`¡NO hay nada en el carrito!`,`error` )
+        return;
+    }
+    if(!usuarioActivo){
+
+        //tostify
+         alertTosty(`No te has loggeado`,`error` )
+        listaCarrito.style.display = `none`;
+        vaciarCarrito()
+        return;
+    }
+
+    factura={ numFactura: numFactura++,
+        fecha : new Date().toLocaleDateString(),
+        comprador : usuarioActivo.nombre,
+        nitComprador : usuarioActivo.getId,
+        items : [...carritoCompra],
+        total : sumTotal
+
+    }
+
+    facturasCompras.push(factura);
+    crearTablaCarrito(); //actualizamos de nuevo el carrrito y el contador
+    actualizarContadorCarrito();
+
+    alertTosty(`factura cargada con exito`,`ok` )
+    console.log("Factura Creada:", factura);
+    
+    verFacturas();
+
+    listaCarrito.style.display="none";
+
+    vaciarCarrito();
+
+    //GUARDAMOS LAS FACT EN LOCALSTORAGE
+    guardarFacturasLocalStorage();
+
+})
+
+ 
+function verFacturas(){ //listamos las facturas
+
+    if(factura.length===0){
+        alert("no hay compras resgistradas")
+    }else{
+
+        let resumenItems = factura.items.map((item) => 
+            ` - ${item.estilo} (x${item.cantidad}) - $${item.valorTotal.toFixed(2)}`
+        ).join('\n'); // Junta todos los ítems con saltos de línea
 
         
-    }   totalCarrito.textContent = `$${sumTotal}`; 
+       // 1. Convertimos los saltos de línea (\n) a etiquetas <br> de HTML.
+    const detalleHTML = resumenItems.replace(/\n/g, '<br>');
 
+    // 2. Usamos SweetAlert2
+    Swal.fire({
+        title: '🎉 ¡COMPRA EXITOSA! 🎉',
+        icon: 'success',
+        // Usamos 'html' para inyectar nuestro contenido formateado
+        html: `
+            <div style="text-align: left; margin: 0 auto; max-width: 300px;">
+                
+                <p><b>Cliente:</b> ${usuarioActivo.nombre}</p>
+                <p><b>Nro. Factura:</b> ${factura.numFactura}</p>
+                
+                <hr>
+                <p style="font-weight: bold;">Detalle de la Compra:</p>
+                
+                <p style="font-size: 0.9em;">${detalleHTML}</p> 
+                
+                <hr>
+                <h3>TOTAL PAGADO: $${factura.total.toFixed(2)}</h3>
+                <br>
+                <h3>ENVIO PROGRAMADO PARA: ${usuarioActivo.direccion}</h3>
+            </div>
+        `,
+        confirmButtonText: 'Guardar Factura',
+    });
 
+    }
+}
+
+//*********************guardar facturas en el local storage  ******************************/
+
+function guardarFacturasLocalStorage() {
+   
+    //convertimoS el array facturas a JSON
+
+    const facturasJSON = JSON.stringify(facturasCompras);
+    
+    // Guardar esa cadena de texto en LocalStorage. Necesita dos parametros key y value
+    localStorage.setItem(FACTURAS_LOCALSTORAGE_KEY, facturasJSON);
+
+    //tostify
+     alertTosty(`Factura guardad exitosamente LS`,`ok`);
+}
+
+function obtenerFacturasLocalStorage(){ 
+    // esta funcion la podemos llamar al incio para cargar datos guardados
+    const facturas_LS_JSON = localStorage.getItem(FACTURAS_LOCALSTORAGE_KEY);
+    
+
+    if(facturas_LS_JSON){
+        const facturasCargadas = JSON.parse(facturas_LS_JSON); 
+        //validamos datos en array
+        console.log(facturasCargadas);
+        console.log("hay FACTURAS guardadas en LS");
+
+        //pasamos lo datos al array global del programa
+        facturasCompras = facturasCargadas;
+    }else{
+        console.log(`no hay facturas guardadas en el localStorage--there are not INVOICES saved in localStorage`)
+    }
+    
 
 }
 
 
-//------------esto es lo antiguo para psarlo al dom-----------------
 
-//--------------ingreso de usuarios----y almacenamiento de datos en el storage
+
+//*****************************************************************************//
+//*****************************************************************************//
+//--------------LOGGIN USUARIOS---ALAMCENAMIENTO EN EL LOCAL STORAGE-----------//
+
+let usuarioActivo = null;
+
+//--------funcion para validar correos y ID--------------------//
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ENTERO_REGEX = /^\d+$/;
+
+function validarEmail(email) {
+    // El método .test() verifica si la cadena coincide con el patrón RegEx.
+    return EMAIL_REGEX.test(email);
+}
+
+function validarId(id) {
+    // El método .test() verifica si la cadena coincide con el patrón RegEx.
+    return ENTERO_REGEX.test(id);
+}
+
+//elelmentos del login
 
 let paginaIngresar = document.getElementById("modalAuth");
+let loginForm = document.getElementById("loginForm");
 let loginEmail= document.getElementById("loginEmail");
 let loginPassword= document.getElementById("loginPassword");
+let linkLogin= document.querySelector(".linkLogin");
+let loginBtn= document.getElementById("loginBtn");
+
+const USERS_LOCALSTORAGE_KEY = 'rambedClientes'; //esta variable para usarlo en el local storage
+
+
 
 let btnCerrarFormRegistro = document.getElementById('cerrarAuth');
 let btnIngreso= document.getElementById("btnAuth");
 
 
 btnIngreso.addEventListener("click", ()=>{
-   
-    
-    paginaIngresar.style.display = `flex`;
+       
+    paginaIngresar.style.display = `block`;
 })
 
 btnCerrarFormRegistro.addEventListener("click", ()=>{
@@ -243,258 +533,220 @@ btnCerrarFormRegistro.addEventListener("click", ()=>{
 
 })
 
-//--------------registro de usuarios----y almacenamiento de datos en el storage
-let linKregistrarse = document.getElementById("linkRegistro");
+//--------------registro de usuarios----y almacenamiento de datos en el local storage
+let linkRegistrarse = document.querySelector(".linkRegistro");
 let formReg = document.getElementById("registroForm");
 let nomReg= document.getElementById("regNombre");
+let idReg= document.getElementById("regId");
+let dirReg= document.getElementById("regDir");
 let mailReg= document.getElementById("regEmail");
 let passReg= document.getElementById("regPassword");
 let btnRegistro= document.getElementById("btnRegistro");
 
-//et btnCerrarFormRegistro = document.getElementById('cerrarAuth');
-//let btnIngreso= document.getElementById("btnAuth");
 
-linKregistrarse.addEventListener("click",()=>{
+
+linkRegistrarse.addEventListener("click",()=>{
    
     formReg.style.display = `block`;
+    loginForm.style.display = `none`;
+    linkLogin.style.display = `block`;
+    linkRegistrarse.style.display = `none`;
+    
+
 })
 
+linkLogin.addEventListener("click", () => {
+    formReg.style.display = `none`;
+    loginForm.style.display = `block`;
+    linkLogin.style.display = `none`;
+    linkRegistrarse.style.display = `block`;
+    
 
+} );
+
+//*************creamos la clase usuario para guardar datos***********  //
 class Usuario{
-    constructor(nombre, mail, password){
+    constructor(nombre, id,direccion, mail, password){
    
     this.nombre= nombre;
+    this.id= id;
+    this.dir= direccion;
     this.mail=mail;
     this.password=password;
     }
 }
 
 
-// array para guardar datos de usuarios vacio.
+// array para guardar datos de usuarios, dejamos uno de esanyo.
 
-let usuarios=[{nombre:"a", mail:"a", password:"a"}]; //usuario de ensayo
+let usuarios=[]; 
 
-// declarmaos variables para usarlas con las funciones
-//inicio de  numero de facturacion en 1000.
 
-let nfactura=1000;
+btnRegistro.addEventListener("click",registrarse)
 
-//FUNCIONES
+function registrarse(e){ 
 
-function registrarse(){ //aca guardamos los registro de usuarios
+    e.preventDefault();
 
-    let nombreU= nomReg.value;
-    let mailU=mailReg.value;
-    let passwordU= mailReg.value;
+    let nombreUsuario= nomReg.value;
+    let idUsuario= idReg.value;
+    let dirUsuario= dirReg.value;
+    let mailUsuario=mailReg.value;
+    let passwordUsuario= passReg.value;
 
-    //creamos una colleccion de info del usuairo
-    let usuario= new Usuario(nombreU, mailU, passwordU);
+
+    if (!validarEmail(mailUsuario)) {
+        alertTosty(`correo incorrecto debe contener @ y .com,  ej: user@mail.com`,`error`);
+        return; 
+    }
+
+    if (!validarId(idUsuario)) {
+        alertTosty(`Id incorrecto debe ser solo numeros`,`error`);
+        return; 
+         }
+
+
+    //Instanciamos a los usuarios nuevos
+
+    let usuario= new Usuario(nombreUsuario, idUsuario,dirUsuario,  mailUsuario, passwordUsuario);
 
     //subimos el usuario al array de usuarios
     usuarios.push(usuario);
 
+    //cambiar etso por un SWEETALERT
     confirm(`Usted ingresó
              \n nombre: ${usuario.nombre}
+            \n ID: ${usuario.id}
+            \n direccion: ${usuario.dir}
             \n email: ${usuario.mail}
             \n password: ${usuario.password} `);
 
-    guardarCleintesLocalStorage();
+    //guaradmos valores en local storage
+    guardarUsuariosLocalStorage();
 
     //verificano valores        
     console.log(usuarios);
 
+    nomReg.value = "";
+    idReg.value = "";
+    dirReg.value ="";
+    dirReg = "";
+    mailReg.value = "";
+    passReg.value = "";
+
+
 }
 
-btnRegistro.addEventListener("click",registrarse)
-
-//guardamo datos el el localStorage//
-
-const USERS_STORAGE_KEY = 'rambedClientes'; 
 
 
-function guardarCleintesLocalStorage() {
-   //convertimo el array usuario a JSON
+function guardarUsuariosLocalStorage() {
+   
+    //convertimoS el array usuario a JSON
 
     const usuariosJSON = JSON.stringify(usuarios);
     
-    // 2. Guardar esa cadena de texto en LocalStorage. necesita dos parametros key value
-    localStorage.setItem(USERS_STORAGE_KEY, usuariosJSON);
+    // Guardar esa cadena de texto en LocalStorage. Necesita dos parametros key y value
+    localStorage.setItem(USERS_LOCALSTORAGE_KEY, usuariosJSON);
 
-    console.log("Usuarios guardados en LocalStorage.");
+    console.log("Usuarios guardados exitosamente en LocalStorage.");
 }
 
-function obtenerDatosLocalStorage(){ // esta funcion la podemos llamar al incio para cargar datos guardados
-    const usuariosJSON = localStorage.getItem(USERS_STORAGE_KEY);
-    //paseramos los datos
+function obtenerUsuariosLocalStorage(){ 
+    // esta funcion la podemos llamar al incio para cargar datos guardados
+    const usuarios_LS_JSON = localStorage.getItem(USERS_LOCALSTORAGE_KEY);
+    
 
-    if(usuariosJSON){
-        const usuariosCargados = JSON.parse(usuariosJSON); // ya quedan los datos en un array
+    if(usuarios_LS_JSON){
+        const usuariosCargados = JSON.parse(usuarios_LS_JSON); 
         //validamos datos en array
         console.log(usuariosCargados);
+        console.log("hay usuarios guardados en ls");
 
         //pasamos lo datos al array global del programa
         usuarios = usuariosCargados;
-    }else{
-        console.log(`no hay usuarios guardados en el localStorage--there are not users saved in localStorage`)
-    }
-    
+       
+}}
 
-}
-
-//cargamos datos el local storage
-
-obtenerDatosLocalStorage();
+obtenerUsuariosLocalStorage() //amnetenemos cargados los usuarios del LS
 
 
+//***************************INGRESO***************************************************//
+//*************************************************************************************//
 
-    
+loginBtn.addEventListener("click",ingresar)
 
-
-/////FALTA ORGANIZAR ESTO CON EL DOM
-
-function ingresar(){ //aca se loggea un usuario registrado
-    
-    let mailR=prompt("ingrese su email: ");
-    let passwordR=prompt("ingrese su password: ");
-    let loggin=false;
+function ingresar(e){ 
+    e.preventDefault();
    
-          //metodo find, recibe por paramentros una funcion para buscar el ususario  
+
+    obtenerUsuariosLocalStorage(); // usuarios queda listo para usarse
+    
+    let mailR=loginEmail.value;
+
+    if (!validarEmail(mailR)) {
+        alertTosty(`correo incorrecto. ej: user@mail.com`,`error`);
+        return; 
+     }
+
+    let passwordR=loginPassword.value;
+    let loggin=false;
+
+   
+          //metodo find, recibe por paramentros una funcion para buscar el ususario 
+
         const usuarioEncontrado= usuarios.find(usuario =>{
             return mailR===usuario.mail && passwordR==usuario.password
         } )
 
-        if(usuarioEncontrado){// si esto es true
+        if(usuarioEncontrado){
             loggin=true;
-            alert("LOGGIN EXITOSO")
-            let usuarioActivo = usuarioEncontrado; 
-        }
+            alertTosty(`LOGIN EXITOSO`,`OK`);
             
-        //verificano valores
-        console.log(loggin)
-
-               
+         }
+            
+                     
         if(loggin===true){
 
-            alert("LOGGIN EXITOSO")
-            let opjeans=0;
-            do{
-                opjeans=parseInt(prompt(`Qué deseas hacer hoy?
-                                        \n 1. comprar
-                                        \n 2. resumen de compra
-                                        \n 0. salir`));
-                
-                switch (opjeans) {
-                    case 1:
-                        comprar();
-                        break;
-                    case 2:
-                        verFacturas();
-                    
-                        break;
-                    case 0:
-                                           
-                        break;
-                
-                    default: alert("opción errada");
-                        break;
-                }
-                
-            }while(opjeans!==0);
-            
+            usuarioActivo=usuarioEncontrado;
+
+          
         }else{
 
-            alert("error en usuario y constraseña")
+            alertTosty(`ERROR EN USUARIO Y CONTRASENA`,`error`);
 
         }
     
-   
-
-
-}
-
-function comprar(){ //listamos los jeans y compramos
-   
-     let totalFactura=0.0;   
-    let mascompra=prompt("Desea comprar un jeans: ? S/N");
-
-    do{ 
+        loginEmail.value = "";
+        loginPassword.value = "";
        
-       
-        if(mascompra.toLocaleLowerCase() !== "n"){
 
-            let mostrar="escoge la opcion que necesites: \n";
+        const estadoUsuarioDiv = document.querySelector('#estadoUser');
 
-            for(let i=0; i<listaJeans.length; i++){
-                mostrar+=`\n ${i}-${listaJeans[i].estilo}--${listaJeans[i].precio} $ `
-                }
+        if (usuarioActivo) {
+            // Usuario logueado: Mostrar nombre y botón de cerrar sesión
+            estadoUsuarioDiv.innerHTML = `
+                <span>Hola, <b>${usuarioActivo.nombre}</b></span> 
+                <button id="btnLogout" class="btn-secundario" style="margin-left: 10px;">Salir</button> `;
+            // Conectar el botón de salir
+            document.getElementById('btnLogout').addEventListener('click', cerrarSesion);
+           //cerramos el modal
 
-            let opventa=0;
-            let cantidad=0;
-            opventa=parseInt(prompt(mostrar));
-            cantidad=parseInt(prompt("cuantas unidades? "));
-
-            let valorjeans= listaJeans[opventa].precio;
-            let valorCompra= valorjeans*cantidad;
-
-            //creamos un objeto compra 
-
-            let compra={ id:listaJeans[opventa].id,
-                        estilo: listaJeans[opventa].estilo, 
-                        cantidad: cantidad,
-                        valorTotal: valorCompra,
-                        }
-            
-            totalFactura=totalFactura+valorCompra;
-            
-            carritoCompra.push(compra); //subimos la compra al array del carrito
+           paginaIngresar.style.display = `none`;
+                  
         }
-         
-        mascompra=prompt("Desea comprar un jeans: ? S/N");
-
-    }while (mascompra.toLowerCase() !== "n" );
-
-       
-
-
-        //luego de terminar el carrito emitimos factura
-
-        let carritoFinal={factura:nfactura, compra: carritoCompra, valorTotal: totalFactura};
-        nfactura++; //incrementamos el valor de la fact
-
-        //guardamos la factura en un array de objets factura
-
-        compras.push(carritoFinal);
-
-        //vaciamos el carrito de compras
-        carritoCompra=[];
-        
-        //para validar
-        console.log(carritoFinal);
-        console.log(compras);
 
 }
 
- 
-function verFacturas(){ //listamos las facturas
+//cerrar sesion
 
-    if(compras.length===0){
-        alert("no hay compras resgistradas")
-    }else{
-
-        let mostrar="lista de tus compras: \n";
-
-        for(let i=0; i<compras.length; i++){
-            mostrar+=`\n factura n: ${compras[i].factura }- --valor total: ${compras[i].valorTotal} $ `
-        }
-        
-        alert(mostrar);
-    }
-
+function cerrarSesion() {
+    usuarioActivo = null; 
+    const estadoUsuarioDiv = document.querySelector('#estadoUser');
+    estadoUsuarioDiv.innerHTML = `
+            <span>Hola, <b>No estas loggeado</b></span>`
 }
 
+//cargamos el local storage
 
-
-
-
-
-
+obtenerUsuariosLocalStorage();
+obtenerFacturasLocalStorage();
