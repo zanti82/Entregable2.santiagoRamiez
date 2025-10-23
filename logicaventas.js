@@ -201,10 +201,10 @@ function agregarAlCarrito(e){
     //capturamos el ID del boton
     let id= parseInt(e.target.getAttribute("data-id"));
 
-    let cantidadUser= parseInt(prompt("ingresa la cantidad deseada"));
+    let cantidadUser= parseInt(prompt("ingresa la cantidad deseada"));///cambiar po swal
     
     
-    console.log("ID Seleccionado:", id); //validacion en el consolg PARA BORRAR
+   
 
     let jeanSeleccionado = listaJeans.find((jeans) => {
        return jeans.id === id;
@@ -219,12 +219,7 @@ function agregarAlCarrito(e){
         
          carritoCompra.push(compra); //subimos la compra al array del carrito
 
-        //validamos //PARA BORRAR
-        console.log("jean agregado:", compra);
-        console.log("Estado del Carrito:", carritoCompra);
-    
-        
-        
+              
         actualizarContadorCarrito(); //Actualizamos el carrito de compra
 
 
@@ -407,7 +402,7 @@ btnFinalizarCompra.addEventListener(`click`,() => {
 function verFacturas(){ //listamos las facturas
 
     if(factura.length===0){
-        alert("no hay compras resgistradas")
+        alertTosty(`no hay compras registardas`,`error`);
     }else{
 
         let resumenItems = factura.items.map((item) => 
