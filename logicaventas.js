@@ -202,6 +202,16 @@ function agregarAlCarrito(e){
     let id= parseInt(e.target.getAttribute("data-id"));
 
     let cantidadUser= parseInt(prompt("ingresa la cantidad deseada"));///cambiar po swal
+
+    if(isNaN(cantidadUser)){
+        Swal.fire({
+            title: 'Ingrese un mumero valido',
+            icon: 'warning',
+            // Usamos 'html' para inyectar nuestro contenido formateado
+            confirmButtonText: 'ok',
+        });
+        return;
+    }
     
     
    
